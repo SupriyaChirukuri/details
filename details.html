@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Contact Manager</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <h1>Contact Manager</h1>
+    <h2>Options:</h2>
+    <ul>
+        <li><a href="#add-contact">Add a New Contact</a></li>
+        <li><a href="#view-contacts">View Contacts</a></li>
+        <li><a href="#edit-contacts">Edit Contacts</a></li>
+        <li><a href="#delete-contacts">Delete Contacts</a></li>
+    </ul>
+    <div id="add-contact">
+        <h2>Add a New Contact</h2>
+        <form>
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name"><br><br>
+            <label for="phone">Phone Number:</label>
+            <input type="tel" id="phone" name="phone"><br><br>
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email"><br><br>
+            <button type="submit">Add Contact</button>
+        </form>
+    </div>
+    <div id="view-contacts">
+        <h2>View Contacts</h2>
+        <ul id="contact-list"></ul>
+    </div>
+    <div id="edit-contacts">
+        <h2>Edit Contacts</h2>
+        <form>
+            <label for="edit-name">Name:</label>
+            <input type="text" id="edit-name" name="edit-name"><br><br>
+            <label for="edit-phone">Phone Number:</label>
+            <input type="tel" id="edit-phone" name="edit-phone"><br><br>
+            <label for="edit-email">Email:</label>
+            <input type="email" id="edit-email" name="edit-email"><br><br>
+            <button type="submit">Edit Contact</button>
+        </form>
+    </div>
+    <div id="delete-contacts">
+        <h2>Delete Contacts</h2>
+        <form>
+            <label for="delete-name">Name:</label>
+            <input type="text" id="delete-name" name="delete-name"><br><br>
+            <button type="submit">Delete Contact</button>
+        </form>
+    </div>
+    <script>
+        let contacts = [];
+        let contactList = document.getElementById("contact-list");
+
+        // Add a new contact
+        document.getElementById("add-contact").addEventListener("submit", addContact);
+
+        function addContact(event) {
+            event.preventDefault();
+            let name = document.getElementById("name").value;
+            let phone = document.getElementById("phone").value;
+            let email = document.getElementById("email").value;
+            contacts.push({ name, phone, email });
+            displayContacts();
+            document.getElementById("name").value = "";
+            document.getElementById("phone").value = "";
+            document.getElementById("email").value = "";
+        }
+
+        // View contacts
+        document.getElementById("view-contacts").addEventListener("click", displayContacts);
+
+        function displayContacts() {
+            contactList.innerHTML = "";
+            contacts.forEach((contact) => {
+                let contactListItem = document.createElement("li");
+                contactListItem.textContent = `${contact.name} - ${contact.phone} - ${contact.email}`;
+                contactList.appendChild(contactListItem);
+            });
+        }
+
+        // Edit contacts
+        document.getElementById("edit-contacts").addEventListener("submit", editContact);
+
+        function editContact(event) {
+            event.preventDefault();
+            let name = document.getElementById("edit-name").value;
+            let phone = document.getElementById("edit-phone").value;
+            let email = document.getElementById("edit-email").value;
+            contacts.forEach((contact, index) => {
+                if (contact.name === name) {
+                    contacts[index] = { name, phone, email };
+                }
+            });
+            displayContacts();
+            document.getElementById("edit-name").value = "";
+            document.getElementById("edit-phone").value = "";
+            document.getElementById("edit-email").value = "";
+        }
+
+        // Delete contacts
+        document.getElementById("delete-contacts").addEventListener("submit", deleteContact);
+
+        function deleteContact(event) {
+            event.preventDefault();
+            let name = document.getElementById("delete-name").value;
+            contacts = contacts.filter((contact) => contact.name !== name);
+            displayContacts();
+            document.getElementById("delete-name").value = "";
+        }
+    </script>
+</body>
+</html>
